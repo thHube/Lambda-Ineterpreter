@@ -17,7 +17,7 @@ case class Var(name:String) extends Term
 case class Lambda(abtraction:Var, body:Term) extends Term
 
 // -- APPLICATION OF FUNCTIONS -------------------------------------------------
-case class App(func:Lambda, param:Term) extends Term
+case class App(func:Term, param:Term) extends Term
 
 // -- For printing ------------------------------------------------------------- 
 object TermWriter {

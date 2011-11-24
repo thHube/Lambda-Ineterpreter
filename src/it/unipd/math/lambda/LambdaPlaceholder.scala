@@ -49,7 +49,10 @@ class LambdaPlaceholder(abs:Var, body:Term) extends Lambda(abs, body) {
     case Lambda(a, b) => {
       lambdaSubstitute(Lambda(a, b), term);
     }
-    case App(lam, b) => App(lambdaSubstitute(lam, term), subsistute(b, term));
+    case App(lam, b) => (lam) match {
+      case Lambda(a, b) => App(lambdaSubstitute(lam, term), subsistute(b, term));
+      case Var(name) => App(lam, subsistute(b, term));
+    }
     case _ => {
       error("Misplaced term");
       throw new LambdaRewriteException

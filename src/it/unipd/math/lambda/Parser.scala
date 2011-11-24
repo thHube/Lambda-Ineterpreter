@@ -12,13 +12,13 @@ class ParserException extends Exception;
 // --     PROG   ::= VAR | LAMBDA | APP;
 // --     VAR    ::= "varname";
 // --     LAMBDA ::= '[' VAR ',' PROG ']';
-// --     APP    ::= '(' LAMBDA ',' PROG ')';
+// --     APP    ::= '(' LAMBDA ',' PROG ')' | '(' VAR ',' PROG ')';
 // -- 
 // -----------------------------------------------------------------------------
 class Parser {
 
   def error(msg:String) {
-    println("[Lambda Parser] >> " + msg);
+    System.err.println("[Lambda Parser] >> " + msg);
   }
   
   // -- Production rule PROG --------------------------------------------------- 
@@ -83,12 +83,18 @@ class Parser {
   
   // --  Production rule APP ---------------------------------------------------
   def parseApp(token: List[Token]): (App, List[Token]) = (token) match {
+    
+    // -- This case we have a lambda to resolve --------------------------------
     case Operator('[')::list => {
       val (lambda, restOfList) = parseLambda(list);
+      
       (restOfList) match {
+        // -- Remove the comma and parse second hand term ----------------------
         case Operator(',')::anothList => {
           val (prog, list2) = parseProg(anothList);
 	      (list2) match {
+	        
+	        // -- Finally remove last parenthesis ------------------------------ 
 	        case Operator(')')::toRetList => (App(lambda, prog), toRetList);
 	        case _ => {
 	          error("Expected )");
@@ -101,8 +107,21 @@ class Parser {
 	      throw new ParserException;
         }
       }
-      
     } 
+    
+    // -- Here we have a variable ----------------------------------------------
+    case Variable(name)::Operator(',')::list => {
+      val (term, restOfList) = parseProg(list);
+      (restOfList) match {
+        case Operator(')')::endOfList => (App(Var(name),term), endOfList);
+        case _ => {
+          error("Expected (");
+          throw new ParserException;
+        }
+      }
+    }
+    
+    // -- All other cases ------------------------------------------------------
     case _ => {
       error("Expected lambda abstraction");
       throw new ParserException;
@@ -120,6 +139,5 @@ class Parser {
       error("Some tokens have been ignored.")
     }
     return parseTree;
-  }
-  
+  }  
 }
