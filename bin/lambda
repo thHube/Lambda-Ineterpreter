@@ -1,0 +1,10 @@
+#!/bin/sh
+# ------------------------------------------------------------------------------
+# -- Author:  Alberto Franco                                                  --
+# -- Command: lambda                                                          --
+# -- Run file for lambda interpreter                                          --
+
+SCALA='scala'
+TARGET='it.unipd.math.lambda.Main'
+
+$SCALA $TARGET $@
