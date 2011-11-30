@@ -1,6 +1,9 @@
 package it.unipd.math.lambda
 
-import scala.io.Source;
+import scala.io.Source
+import it.unipd.math.lambda.cam.CamCodeGenerator
+import it.unipd.math.lambda.cam.CamRunner
+import it.unipd.math.lambda.cam.EnvPrinter
 
 object Main extends scala.App{
  
@@ -13,8 +16,13 @@ object Main extends scala.App{
   private var parser:Parser = new Parser;
   private var solver:TermSolver = BestSolver.solver;
   
-  // -- 
-  def interpret(filename:String) = {
+  // -- CAM components ---------------------------------------------------------
+  private var codeGenerator:CamCodeGenerator = new CamCodeGenerator;
+  private var runner:CamRunner = null;
+  private var camInterpret:Boolean = false;
+  
+  // -- Interpre a file if flag is true run CAM --------------------------------
+  def interpret(filename:String) {
     // -- Open file and convert to a list of char
     val source = Source.fromFile(filename);
     val lines  = source.mkString;
@@ -28,11 +36,20 @@ object Main extends scala.App{
     
       println(TermWriter.write(term));
     
-      // -- Normalize the term -------------------------------------------------
-      val normalTerm = solver.normalize(term);
-    
-      println("\n-- Normalized term:");
-      println(TermWriter.write(normalTerm));
+      if(camInterpret) {
+        val (code, env) = codeGenerator.generate(term);
+        runner = new CamRunner(env);
+        val finalEnv = runner.run(code);
+        
+        println("\n/!\\ -- Using CAM to normalize! ");
+        println("Normalized Environment " + EnvPrinter.write(finalEnv));
+      } else {
+	    // -- Normalize the term ---------------------------------------------
+	    val normalTerm = solver.normalize(term);
+        println("\n-- Normalized term:");
+        println(TermWriter.write(normalTerm));
+      }
+      
     } catch {
       case e:Exception => println("Compilation incomplete");
     }
@@ -53,6 +70,7 @@ object Main extends scala.App{
       true;
     }
     case "-h" | "--help" => { printHelpMessage(); true; }
+    case "--cam"  => { camInterpret = true; true; } 
     case _ => false;
   }
   

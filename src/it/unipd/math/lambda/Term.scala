@@ -29,7 +29,7 @@ object TermWriter {
    */
   def write(term:Term):String = (term) match {
     case Var(name) => name;
-    case Lambda(Var(name), term) => "[lambda " + name + "]." + write(term);
+    case Lambda(Var(name), term) => "[lambda " + name + "." + write(term) + "]";
     case App(lam, term) => write(lam) + "(" + write(term) + ")";
   } 
 }

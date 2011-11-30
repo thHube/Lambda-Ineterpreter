@@ -4,7 +4,6 @@
 # -- Command: lambda                                                          --
 # -- Run file for lambda interpreter                                          --
 
-SCALA='scala'
-TARGET='it.unipd.math.lambda.Main'
+SCALA=  'scala it.math.unipd.lambda.Main'
 
-$SCALA $TARGET $@
+$SCALA $@
