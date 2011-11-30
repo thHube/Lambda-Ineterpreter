@@ -1,8 +1,14 @@
 <h1>A simple &lambda;-calculus interpreter</h1> 
 <p>
     A simple implementation of a &lambda;-calculus interpreter. At current moment
-    it uses rewrite as method for solving &beta;-reductions. 
+    it uses rewrite as method for solving &beta;-reductions also CAM(Categorical
+    Abstract Machine) is available through option <code>--cam<\code>. 
 </p>
+<p>
+    To call the compiler: <code>scala it.unipd.math.lambda.Main[--cam]
+    filename</code>
+</p>
+
 
 <h3>Basic Usage</h3>
 <p> 
