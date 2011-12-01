@@ -1,0 +1,3 @@
+Main-Class: it.unipd.math.lambda.LambdaShell
+Class-Path: scala-library.jar
+ 

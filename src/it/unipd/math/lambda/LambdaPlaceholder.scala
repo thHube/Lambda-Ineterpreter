@@ -1,6 +1,6 @@
 /**
  * @author Alberto Franco
- * -- LambdaPlaceholder.scala --
+ * 
  * Contains definition of Lambda place holders. This represent a lambda 
  * abstraction with all the place where the variable appear with a marker.
  */

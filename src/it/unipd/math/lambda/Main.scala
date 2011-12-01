@@ -8,18 +8,18 @@ import it.unipd.math.lambda.cam.EnvPrinter
 object Main extends scala.App{
  
   // -- Compiler informations --------------------------------------------------
-  private val INTERPRETER_VERSION:String = "0.1 alpha"; 
-  private val EXEC_NAME = "lambda";
+  val INTERPRETER_VERSION:String = "0.1 alpha"; 
+  val EXEC_NAME = "lambda";
   
   // -- Compiler core components -----------------------------------------------
-  private var lexer:LexicalAnalyzer = new LexicalAnalyzer;
-  private var parser:Parser = new Parser;
-  private var solver:TermSolver = BestSolver.solver;
+  var lexer:LexicalAnalyzer = new LexicalAnalyzer;
+  var parser:Parser = new Parser;
+  var solver:TermSolver = BestSolver.solver;
   
   // -- CAM components ---------------------------------------------------------
-  private var codeGenerator:CamCodeGenerator = new CamCodeGenerator;
-  private var runner:CamRunner = null;
-  private var camInterpret:Boolean = false;
+  var codeGenerator:CamCodeGenerator = new CamCodeGenerator;
+  var runner:CamRunner = null;
+  var camInterpret:Boolean = false;
   
   // -- Interpre a file if flag is true run CAM --------------------------------
   def interpret(filename:String) {
