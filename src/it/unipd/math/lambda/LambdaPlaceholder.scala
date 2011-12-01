@@ -24,7 +24,7 @@ class LambdaPlaceholder(abs:Var, body:Term) extends Lambda(abs, body) {
   protected def lambdaSubstitute(body:Term, term:Term):Lambda = (body) match {
     case Lambda(a, b) => {
       if (a.name != abs.name) {
-        Lambda(a, subsistute(b, term));
+        Lambda(a, subsistute(b, term.copy()));
       } else {
         Lambda(a, b);
       }

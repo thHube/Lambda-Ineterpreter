@@ -8,16 +8,24 @@ package it.unipd.math.lambda
 // -- Hierarchy of lambda calculus, base is Term. We have variables, lambda  --
 // -- abstraction and application of functions. We use this classes to parse  --
 // -- input files and to beta reduct                                          --
-abstract class Term 
+abstract class Term {
+  def copy():Term;
+}
 
 // -- VARIABLES ----------------------------------------------------------------
-case class Var(name:String) extends Term
+case class Var(name:String) extends Term {
+  def copy():Term = Var(name);
+}
 
 // -- LAMBDA -------------------------------------------------------------------
-case class Lambda(abtraction:Var, body:Term) extends Term
+case class Lambda(abstraction:Var, body:Term) extends Term {
+  def copy():Term = Lambda(abstraction, body);
+}
 
 // -- APPLICATION OF FUNCTIONS -------------------------------------------------
-case class App(func:Term, param:Term) extends Term
+case class App(func:Term, param:Term) extends Term {
+  def copy():Term = App(func, param);
+}
 
 // -- For printing ------------------------------------------------------------- 
 object TermWriter {
