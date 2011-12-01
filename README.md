@@ -6,7 +6,8 @@
 </p>
 <p>
     To call the compiler: <code>scala it.unipd.math.lambda.Main[--cam]
-    filename</code>
+    filename</code><br/>
+    To use interactive shell: <code>scala it.unipd.math.lambda.LambdaShell</code>
 </p>
 
 
