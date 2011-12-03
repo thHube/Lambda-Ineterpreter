@@ -5,6 +5,7 @@ import it.unipd.math.lambda.cam.CamCodeGenerator
 import it.unipd.math.lambda.cam.CamRunner
 import it.unipd.math.lambda.cam.EnvPrinter
 
+
 object Main extends scala.App{
  
   // -- Compiler informations --------------------------------------------------
@@ -17,7 +18,7 @@ object Main extends scala.App{
   var solver:TermSolver = BestSolver.solver;
   
   // -- CAM components ---------------------------------------------------------
-  var codeGenerator:CamCodeGenerator = new CamCodeGenerator;
+  var codeGenerator:CamCodeGenerator = null;
   var runner:CamRunner = null;
   var camInterpret:Boolean = false;
   
@@ -37,7 +38,9 @@ object Main extends scala.App{
       println(TermWriter.write(term));
     
       if(camInterpret) {
+        codeGenerator = new CamCodeGenerator;
         val (code, env) = codeGenerator.generate(term);
+        
         runner = new CamRunner(env);
         val finalEnv = runner.run(code);
         

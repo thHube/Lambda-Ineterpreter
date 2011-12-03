@@ -5,10 +5,13 @@ import it.unipd.math.lambda.cam.EnvPrinter
 import it.unipd.math.lambda.cam.CamAsmPrinter
 import it.unipd.math.lambda.cam.CamAssembly
 import it.unipd.math.lambda.cam.Environment
+import it.unipd.math.lambda.cam.EnvironmentParser
+import it.unipd.math.lambda.LexicalAnalyzer
 
 object CamCodeGenerationTest {
   
-  private var generator:CamCodeGenerator = new CamCodeGenerator;
+ 
+  private var generator:CamCodeGenerator = new CamCodeGenerator();
   
   def generateCode(filename:String): (List[CamAssembly], Environment) = {
     val term = ParsingTest.parserTest(filename);

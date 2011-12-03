@@ -39,10 +39,9 @@ object LexicalUtil {
    * @return True if the symbol is an operator, False else.
    */
   def isOperator(symbol:Char):Boolean = (symbol) match {
-    case '[' => true;
-    case ']' => true;
-    case '(' => true;
-    case ')' => true;
+    case '[' | ']' => true;
+    case '(' | ')' => true;
+    case '<' | '>' => true;
     case ',' => true;
     case _ => false;
   }

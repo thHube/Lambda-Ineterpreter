@@ -13,6 +13,7 @@ class ParserException extends Exception;
 // --     VAR    ::= "varname";
 // --     LAMBDA ::= '[' VAR ',' PROG ']';
 // --     APP    ::= '(' LAMBDA ',' PROG ')' | '(' VAR ',' PROG ')';
+// --     COUPLE ::= '<' PROG ',' PROG '>'
 // -- 
 // -----------------------------------------------------------------------------
 class Parser {
@@ -33,6 +34,7 @@ class Parser {
     case Operator(symbol)::list => (symbol) match {
       case '[' => parseLambda(list);
       case '(' => parseApp(list);
+      case '<' => parseCouple(list);
       case _ => {
        error("Expected [ or ( and found " + symbol);
        throw new ParserException;
@@ -125,6 +127,33 @@ class Parser {
     case _ => {
       error("Expected lambda abstraction");
       throw new ParserException;
+    }
+  }
+  
+  // -- Parse production COUPLE ------------------------------------------------
+  def parseCouple(token: List[Token]): (Couple, List[Token]) = {
+    // -- Get first 
+    val (fst, rest) = parseProg(token);
+    rest match {
+      case Operator(',')::list => {
+        // -- Get second
+        val (snd, rest) = parseProg(list);
+        rest match {
+          case Operator('>')::list => (Couple(fst, snd), list);
+          
+          // -- Close couple operator missing 
+          case _ => {
+            error("Operator > missing. Forget to close the couple?");
+            throw new ParserException;
+          }
+        }
+      }
+      
+      // -- Commma missing
+      case _ => {
+        error("Expected a comma at this point");
+        throw new ParserException;
+      }
     }
   }
   

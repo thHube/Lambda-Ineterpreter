@@ -27,6 +27,11 @@ case class App(func:Term, param:Term) extends Term {
   def copy():Term = App(func, param);
 }
 
+// -- COUPLE (Used just for typing) --------------------------------------------
+case class Couple(fst:Term, snd:Term) extends Term {
+  def copy():Term = Couple(fst, snd);
+}
+
 // -- For printing ------------------------------------------------------------- 
 object TermWriter {
   

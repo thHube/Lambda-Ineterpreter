@@ -23,9 +23,16 @@ class LambdaRewriter extends TermSolver {
       newLambda.replace(term);
     }
   	
-    // -- Lambda abstraction are substituted with new class. --------------------
+    // -- Lambda abstraction are substituted with new class. -------------------
     case Lambda(abs, body) => {
       new LambdaPlaceholder(abs, body);
+    }
+    
+    // -- Recursive call to normalize ------------------------------------------
+    case App(variable, term) => {
+      val normTerm = normalize(term);
+      val normVar = normalize(variable);
+      App(normVar, normTerm);
     }
     
     // -- Any other case is returned as is -------------------------------------

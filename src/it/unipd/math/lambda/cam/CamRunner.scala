@@ -73,55 +73,22 @@ class CamRunner(environment:Environment) {
       
       // -- CUR ----------------------------------------------------------------
       case Cur(inst) => {
-        env = new EnvCouple(env, EnvInst(Cur(inst)));
+        env = EnvCouple(env, EnvInst(Cur(inst)));
         run(list);
       }
       
       // -- APP ----------------------------------------------------------------
-      case App => {
-        env match {
-          // -- We want to match an environment of type <<a, CUR(c)>, b> ------- 
-          case EnvCouple(fst, snd) => {
-            fst match {
-              // -- Check for <a, CUR(c)> --------------------------------------
-              case EnvCouple(nonCur, cur) => {
-                cur match {
-                  case EnvInst(inst) => inst match {
-                    // -- Got the match ----------------------------------------
-                    case Cur(inst) => {
-                      env = EnvCouple(nonCur, snd);
-                      run(inst ++ list);
-                    }
-                    
-                    // -- Error for CUR(c)  ------------------------------------
-                    case _ => {
-                      error("Expected a CUR(C) instruction");
-                      throw new CamRunnerException;
-                    }
-                  }
-                  
-                  // -- Environment is not correct ----------------------------- 
-                  case _=> {
-                    error("Expected an instrucion in the environment")
-                    throw new CamRunnerException;
-                  }
-                } 
-              }
-              
-              // -- Error for <a, CUR(C)> --------------------------------------
-              case _ => {
-                error("Expected a couple <a, CUR> in environment");
-                throw new CamRunnerException;
-              }
-            }
-          }
-          
-          // -- Does not have a couple in env ----------------------------------
-          case _ => {
-            error("Expected a couple <<a, CUR>, b> in the environment");
-            throw new CamRunnerException;
-          }
+      case App => env match {
+        
+        case EnvCouple(EnvCouple(a, EnvInst(Cur(l))), b) => {
+          env = EnvCouple(a, b);
+          run(l ++ list);
         }
+        // -- Error? -----------------------------------------------------------
+        case _ => {
+          error("Expected a couple <a;CUR(L), b> in environment with APP");
+          throw new CamRunnerException;
+        } 
       }
       
     }
