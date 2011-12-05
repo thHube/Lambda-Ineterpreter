@@ -9,7 +9,7 @@ abstract class Environment {
 case class EnvIdentity extends Environment {
   override def copy():Environment = new EnvIdentity;
 } 
-
+ 
 // -- Variable in the environment. ---------------------------------------------
 case class EnvVar(variable:String) extends Environment {
   override def copy(): Environment =new EnvVar(variable);

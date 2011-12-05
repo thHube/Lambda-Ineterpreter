@@ -84,8 +84,28 @@ class Parser {
   }
   
   // --  Production rule APP ---------------------------------------------------
-  def parseApp(token: List[Token]): (App, List[Token]) = (token) match {
-    
+  def parseApp(token: List[Token]): (App, List[Token]) = {
+    val (p1, restOfList) = parseProg(token);  
+    (restOfList) match {
+    // -- Remove the comma and parse second hand term ----------------------
+    case Operator(',')::anothList => {
+      val (p2, list2) = parseProg(anothList);
+      (list2) match {
+        
+        // -- Finally remove last parenthesis ------------------------------ 
+        case Operator(')')::toRetList => (App(p1, p2), toRetList);
+        case _ => {
+          error("Expected )");
+          throw new ParserException;
+       } 
+      }
+    }
+    case _ => {
+      error("Expected comma (,)")
+      throw new ParserException;
+    }
+  }
+    /*
     // -- This case we have a lambda to resolve --------------------------------
     case Operator('[')::list => {
       val (lambda, restOfList) = parseLambda(list);
@@ -123,11 +143,22 @@ class Parser {
       }
     }
     
+    // -- We have a function application ---------------------------------------
+    case Operator('(')::list => {
+      val (app, rest) = parseApp(list);
+      list match {
+       case Operator(',')::end => {
+         val (prog, rest2) = parseProg()
+       } 
+      }
+    }
+    
     // -- All other cases ------------------------------------------------------
-    case _ => {
-      error("Expected lambda abstraction");
+    case a::list => {
+      error("Unexpected token " + a + " found");
       throw new ParserException;
     }
+    */
   }
   
   // -- Parse production COUPLE ------------------------------------------------
