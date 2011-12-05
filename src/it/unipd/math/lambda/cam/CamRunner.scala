@@ -54,8 +54,10 @@ class CamRunner(environment:Environment) {
           run(list)
         }
         case _ => {
-          error("Expected a couple in the environment");
-          throw new CamRunnerException;
+          // -- Put into the environment fst
+          env = new EnvList(env::EnvInst(Fst)::Nil);
+          // -- Recursive call
+          run(list);
         }
       }
       
@@ -66,31 +68,34 @@ class CamRunner(environment:Environment) {
           run(list)
         }
         case _ => {
-          error("Expected a couple in the environment");
-          throw new CamRunnerException;
+          // -- Put into the environment fst
+          env = new EnvList(env::EnvInst(Snd)::Nil);
+          // -- Recursive call
+          run(list);
         }
       }
       
       // -- CUR ----------------------------------------------------------------
       case Cur(inst) => {
-        env = EnvCouple(env, EnvInst(Cur(inst)));
+        env = EnvList(env::EnvInst(Cur(inst))::Nil);
         run(list);
       }
       
       // -- APP ----------------------------------------------------------------
       case App => env match {
         
-        case EnvCouple(EnvCouple(a, EnvInst(Cur(l))), b) => {
+        case EnvCouple(EnvList(a::EnvInst(Cur(l))::Nil), b) => {
           env = EnvCouple(a, b);
           run(l ++ list);
         }
         // -- Error? -----------------------------------------------------------
         case _ => {
-          error("Expected a couple <a;CUR(L), b> in environment with APP");
-          throw new CamRunnerException;
+          // -- Put into the environment fst
+          env = new EnvList(env::EnvInst(App)::Nil);
+          // -- Recursive call
+          run(list);
         } 
       }
-      
     }
     
     // -- Terminate and return env ---------------------------------------------

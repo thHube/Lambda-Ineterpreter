@@ -6,6 +6,7 @@ import it.unipd.math.lambda.cam._
 object LambdaShell {
   
   // -- Some vars to use in the shell ------------------------------------------
+  val INTERPRETER_VERSION:String = "0.1"; 
   private val SHELL_CURSOR = ">> ";
   private var cam = false;
   
@@ -81,7 +82,7 @@ object LambdaShell {
   
   // -- Once started print this message ----------------------------------------
   def printHelloMessage() {
-    println("Lambda interpreter v" + Main.INTERPRETER_VERSION);
+    println("Lambda interpreter v" + INTERPRETER_VERSION);
     println("created by Alberto Franco (c) 2011")
     println("type 'help' for commands, 'quit' for closing this shell");
   }
@@ -93,8 +94,7 @@ object LambdaShell {
     println("  quit: close the program");
     println("  cam : pass to CAM solution engine");
     println("  rewr: pass to rewriting solution engine");
-    println("  type [LAMBDA]: type a lambda term. In this context is allowed")
-    println("                 to use couples with syntax '<a, b>'")
+    println("  type [LAMBDA]: type a lambda term")
     println("Syntax: ");
     println("  [x, y] - is lambda x. y");
     println("  (a, b) - is a(b)");

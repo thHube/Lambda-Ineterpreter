@@ -43,6 +43,15 @@ object EnvPrinter {
     case EnvIdentity() => "id";
     case EnvVar(name) => name;
     case EnvInst(asm) => asm.toString;
-    case EnvCouple(fst, snd) => "<" + write(fst) + ", " + write(snd) + ">"; 
+    case EnvCouple(fst, snd) => "<" + write(fst) + ", " + write(snd) + ">";
+    case EnvList(list) => {
+      var auxList:List[Environment] = list;
+      var string:String = "";
+      while(auxList != Nil) {
+        string += write(auxList.head) + ";"
+        auxList = auxList.tail;
+      }
+      string;
+    }
   }
 }
